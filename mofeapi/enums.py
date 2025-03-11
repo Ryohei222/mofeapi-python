@@ -1,10 +1,12 @@
 from enum import Enum
 
+
 class AggregateType(Enum):
     ALL = "all"
     SUM = "sum"
     MAX = "max"
     MIN = "min"
+
 
 class Difficulty(Enum):
     MILK = "Milk"
@@ -16,9 +18,11 @@ class Difficulty(Enum):
     FLAVOR = "Flavor"
     PAKCHI = "ผักชี"
 
+
 class StandingsMode(Enum):
     ATCODER = "atcoder"
     ICPC = "icpc"
+
 
 class ContestKind(Enum):
     NORMAL = "normal"
