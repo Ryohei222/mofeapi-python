@@ -63,6 +63,15 @@ class Client:
             return {}
         return response.json()
 
+    # TODO: 次のメソッドを実装する
+    # changeTestcaseState,
+    # updateChecker,
+    # downloadChecker
+    # (getUnsetProblems),
+    # (addTester),
+    # (removeTester),
+    # (createProblem),
+
     # /problems https://github.com/mofecoder/mofe-front/blob/master/app/utils/apis/ManageProblems.ts
     def get_problem(self, problem_id: int) -> ProblemDetail:
         response = self._request("GET", f"/problems/{problem_id}")
@@ -78,17 +87,6 @@ class Client:
         return from_dict(data_class=ProblemDetail, data=response, config=Config(cast=[Difficulty]))
 
     # /problems/{problem_id}/testcases
-    # https://github.com/mofecoder/mofe-front/blob/7e32b10a93c7e515f6e94fe5f46bb8d0cc86ce5f/app/utils/apis/ManageProblems.ts
-    # uploadTestcases,
-
-    # TODO: 次のメソッドを実装する
-    # changeTestcaseState,
-    # updateChecker,
-    # downloadChecker
-    # (getUnsetProblems),
-    # (addTester),
-    # (removeTester),
-    # (createProblem),
 
     def get_testcases(self, problem_id: int) -> Tuple[List[TestcaseSet], List[Testcase]]:
         response = self._request("GET", f"/problems/{problem_id}/testcases")
@@ -172,10 +170,3 @@ class Client:
     def get_contest_task(self, contest_id: str, task_id: str) -> TaskDetail:
         response = self._request("GET", f"/contests/{contest_id}/tasks/{task_id}")
         return from_dict(data_class=TaskDetail, data=response, config=Config(cast=[Difficulty]))
-
-    # def create_problem(self, problem: ProblemParams) -> ProblemDetail:
-    #     response = self._request('POST', '/problems', json=problem.__dict__)
-    #     return ProblemDetail.from_dict(response.json())
-
-    # def get_testcase(self, problem_id: int, testcase_id: int) -> Testcase:
-    #     return self._get(f'/problems/{problem_id}/testcases/{testcase_id}', Testcase)
