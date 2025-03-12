@@ -3,7 +3,9 @@ import unittest
 
 from mofeapi.client import Client
 from mofeapi.enums import AggregateType, Difficulty
-from mofeapi.models.problem import ProblemParams
+from mofeapi.models.contest import Contest
+from mofeapi.models.post import Post
+from mofeapi.models.problem import Problem, ProblemParams
 from mofeapi.models.testcase import TestcaseDetail, TestcaseParams, TestcaseSet, TestcaseSetBase
 
 
@@ -160,6 +162,17 @@ class TestAPIClient(unittest.TestCase):
         self.assertEqual(created_testcase_set.name, testcase_set_params.name)
         self.assertEqual(created_testcase_set.points, testcase_set_params.points)
         self.assertEqual(created_testcase_set.aggregate_type, AggregateType.ALL)
+
+    def test_top(self):
+        contests, problems, posts = self.client.top()
+        self.assertIsInstance(contests, list)
+        self.assertTrue(all(isinstance(contest, Contest) for contest in contests))
+
+        self.assertIsInstance(problems, list)
+        self.assertTrue(all(isinstance(problem, Problem) for problem in problems))
+
+        self.assertIsInstance(posts, list)
+        self.assertTrue(all(isinstance(post, Post) for post in posts))
 
 
 if __name__ == "__main__":
