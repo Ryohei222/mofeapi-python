@@ -27,3 +27,9 @@ class StandingsMode(Enum):
 class ContestKind(Enum):
     NORMAL = "normal"
     PRIVATE = "private"
+
+
+class PublicStatus(Enum):
+    PRIVATE = "private"
+    PUBLIC = "public"
+    LIMITED = "limited"

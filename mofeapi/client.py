@@ -5,8 +5,9 @@ from typing import List, Tuple
 import requests
 from dacite import Config, from_dict
 
-from mofeapi.enums import AggregateType, ContestKind, Difficulty, StandingsMode
-from mofeapi.models.contest import ContestDetail
+from mofeapi.enums import AggregateType, ContestKind, Difficulty, PublicStatus, StandingsMode
+from mofeapi.models.contest import Contest, ContestDetail
+from mofeapi.models.post import Post
 from mofeapi.models.problem import Problem, ProblemDetail, ProblemParams
 from mofeapi.models.task import TaskDetail
 from mofeapi.models.testcase import Testcase, TestcaseDetail, TestcaseParams, TestcaseSet, TestcaseSetBase
@@ -62,6 +63,28 @@ class Client:
         if response.status_code == 201 or response.status_code == 204:
             return {}
         return response.json()
+
+    # https://github.com/mofecoder/mofe-front/blob/7e32b10a93c7e515f6e94fe5f46bb8d0cc86ce5f/app/utils/apis/index.ts
+
+    def top(self) -> Tuple[List[ContestDetail], List[Problem], List[Post]]:
+        """トップページの情報(直近のコンテスト・作成中の問題・記事)を取得する
+
+        Returns:
+            Tuple[List[ContestDetail], List[Problem], List[Post]]: 直近のコンテスト, 作成中の問題, 記事
+        """
+        response = self._request("GET", "/top")
+        contests = [
+            from_dict(data_class=Contest, data=contest, config=Config(cast=[Difficulty, ContestKind, StandingsMode]))
+            for contest in response["contests"]
+        ]
+        problems = [
+            from_dict(data_class=Problem, data=problem, config=Config(cast=[Difficulty]))
+            for problem in response["creating"]
+        ]
+        posts = [
+            from_dict(data_class=Post, data=post, config=Config(cast=[PublicStatus])) for post in response["posts"]
+        ]
+        return contests, problems, posts
 
     # TODO: 次のメソッドを実装する
     # changeTestcaseState,
