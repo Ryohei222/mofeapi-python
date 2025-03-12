@@ -33,3 +33,18 @@ class PublicStatus(Enum):
     PRIVATE = "private"
     PUBLIC = "public"
     LIMITED = "limited"
+
+
+class SubmissionResult(Enum):
+    WJ = "WJ"
+    AC = "AC"
+    WA = "WA"
+    TLE = "TLE"
+    RE = "RE"
+    OLE = "OLE"
+    QLE = "QLE"
+    IE = "IE"
+    CE = "CE"
+    MLE = "MLE"
+    WR = "WR"
+    CP = "CP"
