@@ -107,7 +107,7 @@ class Client:
     def update_problem(self, problem_id: int, problem: ProblemParams) -> ProblemDetail:
         data = json.loads(json.dumps(asdict(problem), cls=CustomJSONEncoder))
         response = self._request("PUT", f"/problems/{problem_id}", json={"problem": data})
-        return from_dict(data_class=ProblemDetail, data=response, config=Config(cast=[Difficulty]))
+        return from_dict(data_class=ProblemDetail, data=response, config=Config(cast=[Difficulty, ContestKind]))
 
     # /problems/{problem_id}/testcases
 
