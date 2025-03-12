@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="mofeapi",
-    version="0.1.2",
+    version="0.1.3",
     author="Ryohei Kobayashi",
     author_email="kobaryo222912@gmail.com",
     description="Unofficial Python wrapper for MOFE API",

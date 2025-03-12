@@ -180,7 +180,7 @@ class Client:
             "POST",
             f"/problems/{problem_id}/testcases/upload",
             files={"file": file},
-            expected_status_code=204,
+            expected_status_code=200,
         )
 
     # /contests
