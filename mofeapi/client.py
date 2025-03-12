@@ -98,7 +98,7 @@ class Client:
     # /problems https://github.com/mofecoder/mofe-front/blob/master/app/utils/apis/ManageProblems.ts
     def get_problem(self, problem_id: int) -> ProblemDetail:
         response = self._request("GET", f"/problems/{problem_id}")
-        return from_dict(data_class=ProblemDetail, data=response, config=Config(cast=[Difficulty]))
+        return from_dict(data_class=ProblemDetail, data=response, config=Config(cast=[Difficulty, ContestKind]))
 
     def get_problems(self) -> list[Problem]:
         response = self._request("GET", "/problems")

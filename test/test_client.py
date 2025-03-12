@@ -38,6 +38,12 @@ class TestAPIClient(unittest.TestCase):
         self.assertEqual(problem.name, "逆転条件")
         self.assertEqual(problem.difficulty, Difficulty.PAKCHI)
 
+    def test_get_problem_296(self):
+        problem = self.client.get_problem(296)
+        self.assertEqual(problem.id, 296)
+        self.assertEqual(problem.name, "ngng 文字列")
+        self.assertEqual(problem.difficulty, Difficulty.PAKCHI)
+
     def test_get_problem_306(self):
         problem = self.client.get_problem(306)
         self.assertEqual(problem.id, 306)
