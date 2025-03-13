@@ -1,5 +1,6 @@
 import json
 from dataclasses import asdict
+from logging import getLogger
 from typing import List, Tuple
 
 import requests
@@ -11,6 +12,8 @@ from mofeapi.models.post import Post
 from mofeapi.models.problem import Problem, ProblemDetail, ProblemParams
 from mofeapi.models.task import TaskDetail
 from mofeapi.models.testcase import Testcase, TestcaseDetail, TestcaseParams, TestcaseSet, TestcaseSetBase
+
+logger = getLogger(__name__)
 
 API_URL = "https://api.mofecoder.com/api"
 LOGIN_URL = "https://api.mofecoder.com/api/auth/sign_in"
@@ -32,6 +35,7 @@ class Client:
 
     def login(self, username: str, password: str) -> int:
         data = {"name": username, "password": password}
+        logger.debug("Logging in")
         try:
             response = requests.post(LOGIN_URL, data=data)
             response.raise_for_status()
@@ -42,23 +46,25 @@ class Client:
                 "uid": response.headers["uid"],
                 "access-token": response.headers["access-token"],
             }
-        except requests.exceptions.RequestException as e:
-            print(f"Login failed: {e}")
-            return response.status_code if response else 500
+        except requests.exceptions.RequestException:
+            logger.error("MOFE login failed")
+            raise Exception("MOFE login failed")
+        logger.debug("Logged in")
         return response.status_code
 
     def _request(self, method: str, path: str, headers={}, expected_status_code: int = 200, **kwargs) -> dict:
         if not self.logined:
-            print("Not logged in")
+            logger.error("Not logged in")
             raise Exception("Not logged in")
         try:
             response = requests.request(method, API_URL + path, headers=self.headers | headers, **kwargs)
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            print(f"Request failed: {e}")
+            logger.error(f"Request failed: {e}")
+            raise
         if response.status_code != expected_status_code:
-            print(f"Expected status code {expected_status_code}, but got {response.status_code}")
-            print(response.text)
+            logger.error("Expected status code %s, but got %s", expected_status_code, response.status_code)
+            logger.error("Error response: %s", response.text)
             raise Exception("Request failed")
         if response.status_code == 201 or response.status_code == 204:
             return {}
