@@ -1,3 +1,4 @@
+import logging
 import os
 import unittest
 
@@ -11,6 +12,8 @@ from mofeapi.models.testcase import TestcaseDetail, TestcaseParams, TestcaseSet,
 
 class TestAPIClient(unittest.TestCase):
     def setUp(self):
+        logging.basicConfig(level=logging.DEBUG)
+        logging.getLogger("urllib3").setLevel(logging.WARNING)
         self.client = Client()
         self.client.login(username=os.environ["MOFE_USERNAME"], password=os.environ["MOFE_PASSWORD"])
 
